@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - User Authentication System{% endblock %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <a href="{{ url_for('logout') }}" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+        <p>Welcome back, <strong>{{ username }}</strong>! Here's your account overview.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="user-list">
+        <h3>
+            <i class="fas fa-users"></i> 
+            Registered Users ({{ users|length }})
+        </h3>
+        
+        {% if users %}
+            {% for user in users %}
+                <div class="user-item">
+                    <i class="fas fa-user"></i>
+                    <span>{{ user }}</span>
+                    {% if user == username %}
+                        <span style="margin-left: auto; color: #667eea; font-weight: 500;">(You)</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p style="color: #666; text-align: center; padding: 20px;">
+                <i class="fas fa-info-circle"></i> No users registered yet.
+            </p>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <p style="color: #666; font-size: 14px;">
+            <i class="fas fa-shield-alt"></i> Your data is securely stored and encrypted
+        </p>
+    </div>
+</div>
+{% endblock %} 
